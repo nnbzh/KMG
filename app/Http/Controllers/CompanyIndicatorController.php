@@ -80,15 +80,8 @@ class CompanyIndicatorController extends Controller
             ['company_id' => "required|exists:companies,id"]
         );
 
-        $data = Indicator::query()
-            ->selectRaw("date_trunc('day', date)::date as x, qliq as y, types.slug as type")
-            ->leftJoin('types', 'indicators.type_id', '=', 'types.id')
-            ->groupBy('x', 'y', 'type')
-            ->orderByRaw(1)
-            ->where('company_id',request('company_id'))
-            ->get()
-            ->groupBy('type')
-            ->forget('type');
+        $data['qliq'] = $this->getGraphInfoByIndicatorType('qliq');
+        $data['qoil'] = $this->getGraphInfoByIndicatorType('qoil');
 
         return $this->successResponse($data);
     }
@@ -96,6 +89,18 @@ class CompanyIndicatorController extends Controller
     public function companies(): JsonResponse
     {
         return $this->successResponse(Company::query()->get());
+    }
+
+    public function getGraphInfoByIndicatorType($type) {
+        return Indicator::query()
+            ->selectRaw("date_trunc('day', date)::date as x, $type as y, types.slug as type")
+            ->leftJoin('types', 'indicators.type_id', '=', 'types.id')
+            ->groupBy('x', 'y', 'type')
+            ->orderByRaw(1)
+            ->where('company_id',request('company_id'))
+            ->get()
+            ->groupBy('type')
+            ->forget('type');
     }
 
     /**
