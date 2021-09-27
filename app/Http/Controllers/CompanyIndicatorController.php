@@ -80,10 +80,17 @@ class CompanyIndicatorController extends Controller
             ['company_id' => "required|exists:companies,id"]
         );
 
-        $data = Company::query()->with('indicators.type')->where('id', request('company_id'))->first();
-        $data['indicators'] = $data->indicators->groupBy('type_id');
+        $data = Indicator::query()
+            ->selectRaw("date_trunc('day', date)::date as x, qliq as y, types.slug as type")
+            ->leftJoin('types', 'indicators.type_id', '=', 'types.id')
+            ->groupBy('x', 'y', 'type')
+            ->orderByRaw(1)
+            ->where('company_id',request('company_id'))
+            ->get()
+            ->groupBy('type')
+            ->forget('type');
 
-        return $this->successResponse($data['indicators']);
+        return $this->successResponse($data);
     }
 
     /**
