@@ -93,6 +93,11 @@ class CompanyIndicatorController extends Controller
         return $this->successResponse($data);
     }
 
+    public function companies(): JsonResponse
+    {
+        return $this->successResponse(Company::query()->get());
+    }
+
     /**
      * @param array $data
      * @return array

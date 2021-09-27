@@ -17,3 +17,4 @@ Route::get('/', function () {
 });
 Route::post('import', [\App\Http\Controllers\CompanyIndicatorController::class, 'import']);
 Route::get('graph', [\App\Http\Controllers\CompanyIndicatorController::class, 'getGraphData']);
+Route::get('companies', [\App\Http\Controllers\CompanyIndicatorController::class, 'companies']);
