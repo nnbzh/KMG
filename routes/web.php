@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function () {
+    return response()->json(['success' => true]);
+});
 Route::post('import', [\App\Http\Controllers\CompanyIndicatorController::class, 'import']);
 Route::get('graph', [\App\Http\Controllers\CompanyIndicatorController::class, 'getGraphData']);
