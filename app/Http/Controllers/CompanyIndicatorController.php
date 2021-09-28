@@ -41,7 +41,7 @@ class CompanyIndicatorController extends Controller
                 $counter = 0;
                 foreach ($types as $type) {
                     $parsed = array_slice($row, self::QlIQ_START_INDEX);
-                    $parsed = array_slice($parsed, $counter * count($datesColumn) * $columnCountPerType, count($parsed) / $columnCountPerType);
+                    $parsed = array_slice($parsed, $counter * count($datesColumn) + $columnCountPerType, 2 * $columnCountPerType);
 
                     $dateCounter = 0;
                     foreach ($datesColumn as $date) {
